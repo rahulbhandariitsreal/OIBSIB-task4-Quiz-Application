@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     //question wille be stored in  a arrray list
     //theme will be bule and white
     ImageView imageView,previous,exitfrag;
+
+    int exitint;
     LinearLayout l1;
 
 
@@ -62,6 +66,28 @@ public class MainActivity extends AppCompatActivity {
         exitfrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Exit confirmation dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Are you sure you want to exit?");
+                builder.setCancelable(false);
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        exitint=0;
+                        onBackPressed();
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                // Show the dialog when the user wants to exit
+                // For example, when pressing the back button
+
+                    builder.show();
 
             }
         });
@@ -79,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 l1.setVisibility(View.GONE);
                 QuizFragment newFragment = new QuizFragment();
                 startfragment(newFragment);
@@ -102,9 +130,34 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        l1.setVisibility(View.VISIBLE);
-        frameLayout.setVisibility(View.GONE);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("Are you sure you want to exit?");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                l1.setVisibility(View.VISIBLE);
+                frameLayout.setVisibility(View.GONE);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        // Show the dialog when the user wants to exit
+        // For example, when pressing the back button
+        builder.show();
+
+        if(exitint==0){
+            super.onBackPressed();
+        }
+
     }
+
 
     private void setquestion(){
 

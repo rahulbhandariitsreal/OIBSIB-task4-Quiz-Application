@@ -45,7 +45,6 @@ private int correct_score,wrong,unattempted;
         bindingg.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Restarted", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getContext(), MainActivity.class));
             }
         });

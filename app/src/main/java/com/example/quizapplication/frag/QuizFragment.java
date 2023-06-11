@@ -1,5 +1,7 @@
 package com.example.quizapplication.frag;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,12 +11,10 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.quizapplication.MainActivity;
@@ -42,6 +42,33 @@ public class QuizFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = FragmentQuizBinding.inflate(inflater, container, false);
+
+
+        binding.mainmenu.setOnClickListener(v -> {
+
+
+            // Exit confirmation dialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+            builder.setMessage("Are you sure you want to exit?");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    startActivity(new Intent(getContext(),MainActivity.class));
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+
+                builder.show();
+        });
+
 
         Handler handler=new Handler(Looper.getMainLooper());
         handler.postDelayed(new Runnable() {
@@ -98,56 +125,50 @@ public class QuizFragment extends Fragment {
             }
         });
 
-        binding.nextBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        binding.nextBtn.setOnClickListener(v -> {
 
 // Get the selected radio button's id
-                int selectedRadioButtonId = binding.optionsGroup.getCheckedRadioButtonId();
-                Question question1 = MainActivity.questionList.get(counter);
+            int selectedRadioButtonId = binding.optionsGroup.getCheckedRadioButtonId();
+            Question question1 = MainActivity.questionList.get(counter);
 
-                if (selectedRadioButtonId != -1) {
-                    // Find the selected radio button using the id
-                    RadioButton selectedRadioButton = binding.optionsGroup.findViewById(selectedRadioButtonId);
-                    // Do something with the selected radio button
-                    String ans = (String) selectedRadioButton.getTag();
-                    if (ans.equals(question1.getCorrectAnswer())) {
-                        correct_score++;
-                        Toast.makeText(getContext(), "" + correct_score, Toast.LENGTH_SHORT).show();
-                    } else {
-                        wrong++;
-                    }
+            if (selectedRadioButtonId != -1) {
+                // Find the selected radio button using the id
+                RadioButton selectedRadioButton = binding.optionsGroup.findViewById(selectedRadioButtonId);
+                // Do something with the selected radio button
+                String ans = (String) selectedRadioButton.getTag();
+                if (ans.equals(question1.getCorrectAnswer())) {
+                    correct_score++;
                 } else {
-                    unattempted++;
+                    wrong++;
                 }
-                Log.v("TAg","Correct"+correct_score+"\n"
-                +"wrong:"+wrong+"\n"
-                +"Unattempted:"+unattempted
-                +"\n"+"counter"+counter);
-                counter++;
-
-                if (counter ==15) {
-                    showSecondFragment(new ResultFragment());
-                    return;
-                }
-                binding.records.setText("Attempted" + (counter + 1) + "/15");
-                Question question = MainActivity.questionList.get(counter);
-                binding.questions.setText(question.getQuestion());
-                binding.op1.setText(question.getOptions().get(0));
-                binding.op2.setText(question.getOptions().get(1));
-                binding.op3.setText(question.getOptions().get(2));
-                binding.op4.setText(question.getOptions().get(3));
-
-                binding.optionsGroup.clearCheck();
-                if (counter == 14) {
-                    binding.nextBtn.setText("Submit");
-                }
-
+            } else {
+                unattempted++;
             }
+
+            counter++;
+
+            if (counter ==15) {
+                showSecondFragment(new ResultFragment());
+                return;
+            }
+            binding.records.setText("Attempted" + (counter + 1) + "/15");
+            Question question2 = MainActivity.questionList.get(counter);
+            binding.questions.setText(question2.getQuestion());
+            binding.op1.setText(question2.getOptions().get(0));
+            binding.op2.setText(question2.getOptions().get(1));
+            binding.op3.setText(question2.getOptions().get(2));
+            binding.op4.setText(question2.getOptions().get(3));
+
+            binding.optionsGroup.clearCheck();
+            if (counter == 14) {
+                binding.nextBtn.setText("Submit");
+            }
+
         });
         return binding.getRoot();
 
     }
+
 
 
     public void showSecondFragment(Fragment fragment) {

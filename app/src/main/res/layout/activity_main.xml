@@ -10,16 +10,7 @@
     tools:context=".MainActivity">
 
 
-    <TextView
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Welcome to Quiz Application!"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        />
+
 
     <LinearLayout
         android:id="@+id/l1"
@@ -29,6 +20,16 @@
        android:orientation="vertical"
         >
 
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome to Quiz Application!"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            />
 
 
     <ImageView
